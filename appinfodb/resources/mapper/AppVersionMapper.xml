@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sq.appinfo.dao.AppVersionDao">
+				
+	<select id="getAppVersion" resultType="AppVersion">
+		select * from app_version where id = #{id}
+	</select>
+	
+	<select id="getAppVersionappId" resultType="AppVersion">
+		SELECT * FROM app_version v
+				INNER JOIN (SELECT id,softwareName AS appName FROM app_info a) a ON v.appId = a.id 
+				INNER JOIN (SELECT valueId,valueName AS publishStatusName FROM data_dictionary WHERE typeCode ="APP_STATUS" ) d ON d.valueId=v.publishStatus
+		WHERE appId=#{appId}		
+	</select>
+	<insert id="InsertAppVersion">
+		INSERT INTO app_version VALUES(null,#{appId},#{versionNo},#{versionInfo},#{publishStatus},#{downloadLink},#{versionSize},#{createdBy},#{creationDate},#{modifyBy},#{modifyDate},#{apkLocPath},#{apkFileName});		
+	</insert>
+</mapper>
